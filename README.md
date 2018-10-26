@@ -357,6 +357,9 @@ frontend-67f65745c-bg95m            1/1       Running   0          2h
 frontend-67f65745c-xgwcc            1/1       Running   0          48s
 load-generator-16-f785db896-5c6s8   1/1       Running   0          1m
 load-generator-2-558d9cbb64-tsrbr   1/1       Running   0          1m
+
+![alt text](https://raw.githubusercontent.com/nightmareze1/kubelab/master/1.png)
+
 load-generator-3-849c566884-5ltvx   1/1       Running   0          1m
 load-generator-4-6769b8bd7b-chdx8   1/1       Running   0          1m
 load-generator-5-644494c48-f72xz    1/1       Running   0          1m
