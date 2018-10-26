@@ -44,7 +44,9 @@ gke-kubetest-default-pool-fc03e629-fbvr   Ready     <none>    1m        v1.9.7-g
 
 # Install helm manager.
 ➜  gke kubectl create serviceaccount --namespace kube-system tiller
+
 ➜  gke kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+
 ➜  gke kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'      
 helm init --service-account tiller --upgrade
 
@@ -63,6 +65,7 @@ nginx-ingress	1       	Fri Oct 26 08:17:45 2018	DEPLOYED	nginx-ingress-0.19.2	0.
 ➜  gke k get po |grep ingress
 nginx-ingress-controller-7d745cf7b-9vqvr        1/1       Running   0          38s
 nginx-ingress-default-backend-c6f8f7b87-wnsfq   1/1       Running   0          38s
+
 ➜  gke k get svc
 NAME                            TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
 kubernetes                      ClusterIP      10.15.240.1     <none>        443/TCP                      6m
@@ -84,12 +87,14 @@ namespace/production created
 
 ➜  kube-test k create -f redis-master.yml
 deployment.apps/redis-master created
+
 ➜  kube-test k get deploy,po -n staging
 NAME                                 DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 deployment.extensions/redis-master   1         1         1            0           13s
 
 NAME                                READY     STATUS              RESTARTS   AGE
 pod/redis-master-585798d8ff-x2mwj   0/1       ContainerCreating   0          12s
+
 ➜  kube-test k get deploy,po -n staging
 NAME                                 DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 deployment.extensions/redis-master   1         1         1            1           26s
@@ -167,33 +172,53 @@ add to my /etc/hosts 3
 35.196.125.129 guestbook.mstakx.io
 
 ➜  kube-test cp -R staging-frontend production-frontend
+
 ➜  kube-test ls
 production-frontend staging-frontend
+
 ➜  kube-test cd production-frontend
+
 ➜  production-frontend ls
 deploy-frontend-app.yml  ing-frontend-service.yml redis-master.yml         redis-slave.yml          svc-frontend-app.yml     svc-redis-master.yml     svc-redis-slave.yml
+
 ➜  production-frontend vi deploy-frontend-app.yml
+
 ➜  production-frontend vi ing-frontend-service.yml
+
 ➜  production-frontend vi redis-master.yml
+
 ➜  production-frontend vi redis-slave.yml
+
 ➜  production-frontend ls
 deploy-frontend-app.yml  ing-frontend-service.yml redis-master.yml         redis-slave.yml          svc-frontend-app.yml     svc-redis-master.yml     svc-redis-slave.yml
+
 ➜  production-frontend vi ing-frontend-service.yml
+
 ➜  production-frontend ls
 deploy-frontend-app.yml  ing-frontend-service.yml redis-master.yml         redis-slave.yml          svc-frontend-app.yml     svc-redis-master.yml     svc-redis-slave.yml
+
 ➜  production-frontend vi svc-frontend-app.yml
+
 ➜  production-frontend egrep -r staging .
 ./ing-frontend-service.yml:  - host: staging-guestbook.mstakx.io
 ./svc-redis-master.yml:  namespace: staging
 ./svc-redis-slave.yml:  namespace: staging
+
 ➜  production-frontend vi svc-redis-master.yml
+
 ➜  production-frontend vi svc-redis-slave.yml
+
 ➜  production-frontend ls
 deploy-frontend-app.yml  ing-frontend-service.yml redis-master.yml         redis-slave.yml          svc-frontend-app.yml     svc-redis-master.yml     svc-redis-slave.yml
+
 ➜  production-frontend vi ing-frontend-service.yml
+
 ➜  production-frontend k create -f .
+
 ➜  production-frontend egrep -r staging .
+
 ➜  production-frontend vi svc-redis-slave.yml
+
 ➜  production-frontend k create -f .
 deployment.apps/frontend created
 ingress.extensions/frontend created
@@ -214,6 +239,8 @@ Last-Modified: Wed, 09 Sep 2015 18:35:04 GMT
 ETag: "399-51f54bdb4a600"
 Accept-Ranges: bytes
 Vary: Accept-Encoding
+
+![alt text](https://raw.githubusercontent.com/nightmareze1/kubelab/master/6.png)
 
 ➜  production-frontend curl -XGET -H"Host: guestbook.mstakx.io" http://35.196.125.129
 <html ng-app="redis">
@@ -241,6 +268,8 @@ Vary: Accept-Encoding
     </div>
   </body>
 </html>
+
+![alt text](https://raw.githubusercontent.com/nightmareze1/kubelab/master/5.png)
 
 ➜  production-frontend curl -XGET -H"Host: staging-guestbook.mstakx.io" http://35.196.125.129
 <html ng-app="redis">
@@ -285,6 +314,8 @@ in another terminal i up 10 load-generator application using this
 ➜ kubectl run -i --tty load-generator-1 --image=busybox /bin/sh --namespace production
 while true; do wget -q -O- http://frontend ;done
 
+![alt text](https://raw.githubusercontent.com/nightmareze1/kubelab/master/3.png)
+
 Every 2.0s: kubectl top po -n production                                                                      ntkzz.local: Fri Oct 26 10:45:56 2018
 
 NAME                                CPU(cores)   MEMORY(bytes)
@@ -320,6 +351,8 @@ horizontalpodautoscaler.autoscaling/frontend created
 # I repeat the similar test with staging-guestbook
 kubectl run -i --tty load-generator-16 --image=busybox /bin/sh --namespace staging
 while true; do wget -q -O- http://frontend ;done
+
+![alt text](https://raw.githubusercontent.com/nightmareze1/kubelab/master/4.png)
 
 Every 2.0s: kubectl get hpa -n staging                                                                                                                                                                                                                            ntkzz.local: Fri Oct 26 10:50:55 2018
 
@@ -359,6 +392,8 @@ load-generator-16-f785db896-5c6s8   1/1       Running   0          1m
 load-generator-2-558d9cbb64-tsrbr   1/1       Running   0          1m
 
 ![alt text](https://raw.githubusercontent.com/nightmareze1/kubelab/master/1.png)
+
+![alt text](https://raw.githubusercontent.com/nightmareze1/kubelab/master/2.png)
 
 load-generator-3-849c566884-5ltvx   1/1       Running   0          1m
 load-generator-4-6769b8bd7b-chdx8   1/1       Running   0          1m
