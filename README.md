@@ -1,3 +1,4 @@
+```
 ➜  gke gcloud auth login
 Your browser has been opened to visit:
 
@@ -239,9 +240,11 @@ Last-Modified: Wed, 09 Sep 2015 18:35:04 GMT
 ETag: "399-51f54bdb4a600"
 Accept-Ranges: bytes
 Vary: Accept-Encoding
+```
 
 ![alt text](https://raw.githubusercontent.com/nightmareze1/kubelab/master/6.png)
 
+```
 ➜  production-frontend curl -XGET -H"Host: guestbook.mstakx.io" http://35.196.125.129
 <html ng-app="redis">
   <head>
@@ -268,9 +271,11 @@ Vary: Accept-Encoding
     </div>
   </body>
 </html>
+```
 
 ![alt text](https://raw.githubusercontent.com/nightmareze1/kubelab/master/5.png)
 
+```
 ➜  production-frontend curl -XGET -H"Host: staging-guestbook.mstakx.io" http://35.196.125.129
 <html ng-app="redis">
   <head>
@@ -313,8 +318,11 @@ frontend   Deployment/frontend   <unknown>/30%   1         5         0          
 in another terminal i up 10 load-generator application using this
 ➜ kubectl run -i --tty load-generator-1 --image=busybox /bin/sh --namespace production
 while true; do wget -q -O- http://frontend ;done
+```
 
 ![alt text](https://raw.githubusercontent.com/nightmareze1/kubelab/master/3.png)
+
+```
 
 Every 2.0s: kubectl top po -n production                                                                      ntkzz.local: Fri Oct 26 10:45:56 2018
 
@@ -351,8 +359,11 @@ horizontalpodautoscaler.autoscaling/frontend created
 # I repeat the similar test with staging-guestbook
 kubectl run -i --tty load-generator-16 --image=busybox /bin/sh --namespace staging
 while true; do wget -q -O- http://frontend ;done
+```
 
 ![alt text](https://raw.githubusercontent.com/nightmareze1/kubelab/master/4.png)
+
+```
 
 Every 2.0s: kubectl get hpa -n staging                                                                                                                                                                                                                            ntkzz.local: Fri Oct 26 10:50:55 2018
 
@@ -390,11 +401,13 @@ frontend-67f65745c-bg95m            1/1       Running   0          2h
 frontend-67f65745c-xgwcc            1/1       Running   0          48s
 load-generator-16-f785db896-5c6s8   1/1       Running   0          1m
 load-generator-2-558d9cbb64-tsrbr   1/1       Running   0          1m
+```
 
 ![alt text](https://raw.githubusercontent.com/nightmareze1/kubelab/master/1.png)
 
 ![alt text](https://raw.githubusercontent.com/nightmareze1/kubelab/master/2.png)
 
+```
 load-generator-3-849c566884-5ltvx   1/1       Running   0          1m
 load-generator-4-6769b8bd7b-chdx8   1/1       Running   0          1m
 load-generator-5-644494c48-f72xz    1/1       Running   0          1m
@@ -410,4 +423,5 @@ deployment.extensions "load-generator-3" deleted
 deployment.extensions "load-generator-4" deleted
 deployment.extensions "load-generator-5" deleted
 deployment.extensions "load-generator-7" deleted
+```
 
