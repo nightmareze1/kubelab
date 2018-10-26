@@ -1,4 +1,4 @@
-""" K8S in gcloud with autoscaling and HPA test"
+""" K8S in gcloud with autoscaling and HPA test """
 
 ```
 ➜  gke gcloud auth login
